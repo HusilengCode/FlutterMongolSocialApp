@@ -113,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> uploadToImgbb() async {
     if (_imageDataList.isEmpty) return;
 
-    final String apiKey = '915bbebc5ff7bc3a3b4030a802532430';  // Replace with your Imgbb API key
+    final String apiKey = '';  // Replace with your Imgbb API key
 
     for (var imageData in _imageDataList) {
       final String base64Image = base64Encode(imageData);
