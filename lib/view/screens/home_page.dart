@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readky/model/core/news.dart';
@@ -10,6 +14,7 @@ import 'package:readky/view/widgets/custom_app_bar.dart';
 import 'package:readky/view/widgets/featured_news_card.dart';
 import 'package:readky/view/widgets/news_tile.dart';
 import 'package:scroll_indicator/scroll_indicator.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,28 +22,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ScrollController _featuredNewsScrollController = ScrollController();
-  List<News> featuredNewsData = NewsHelper.featuredNews;
-  List<News> breakingNewsData = NewsHelper.breakingNews;
-  List<News> recomendationNewsData = NewsHelper.recomendationNews;
+  ScrollController innerController = ScrollController();
+  // List<News> featuredNewsData = NewsHelper.featuredNews;
+  // List<News> breakingNewsData = NewsHelper.breakingNews;
+  // List<News> recomendationNewsData = NewsHelper.recomendationNews;
+
+  List<News> featuredNewsData = [];
+
+  void initState() {
+    super.initState();
+    _fetchNews();
+  }
+
+  Future<void> _fetchNews() async {
+    final response = await http.get(Uri.parse('http://localhost:3000/api/featuredNews'));
+    if (response.statusCode == 200) {
+      final List<dynamic> json = jsonDecode(response.body);
+      setState(() {
+      featuredNewsData = json.map((item) => News.fromJson(item)).toList();
+      });
+    } else {
+      throw Exception('Failed to load News');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
+        // leadingIcon: Icon(CupertinoIcons.menu, color: Colors.blue, size: 30,),
         leadingIcon: SvgPicture.asset(
           'assets/icons/Menu.svg',
-          color: Colors.white,
+          color: Colors.yellow,
+          width: 30,
         ),
         onPressedLeading: () {
           Scaffold.of(context).openDrawer();
+          _fetchNews();
         },
-        title: SvgPicture.asset('assets/icons/appname.svg'),
-        profilePicture: Image.asset(
-          'assets/images/pp.png',
-          fit: BoxFit.cover,
-        ),
+        profilePicture: Icon(CupertinoIcons.pencil, color: Colors.yellow, size: 30,),
         onPressedProfilePicture: () {
           Navigator.of(context).push(SlidePageRoute(child: ProfilePage()));
         },
@@ -47,154 +70,80 @@ class _HomePageState extends State<HomePage> {
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         children: [
-          // section 1 - Featured News
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            width: MediaQuery.of(context).size.width,
-            height: 390,
-            color: Colors.black,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 320,
-                  child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
-                    controller: _featuredNewsScrollController,
-                    padding: EdgeInsets.only(left: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: featuredNewsData.length,
-                    separatorBuilder: (context, index) {
-                      return SizedBox(width: 16);
-                    },
-                    itemBuilder: (context, index) {
-                      return FeaturedNewsCard(
-                        data: featuredNewsData[index],
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Featured news',
-                        style: TextStyle(color: Colors.white.withOpacity(0.6)),
-                      ),
-                      ScrollIndicator(
-                        scrollController: _featuredNewsScrollController,
-                        height: 6,
-                        width: 30,
-                        indicatorWidth: 20,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white.withOpacity(0.3)),
-                        indicatorDecoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          // section 2 - Breaking News
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Breaking News',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'inter',
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(SlidePageRoute(child: BreakingNewsPage()));
-                        },
-                        child: Text(
-                          'view more',
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          onPrimary: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 200,
-                  margin: EdgeInsets.only(top: 6),
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: breakingNewsData.length,
-                    physics: BouncingScrollPhysics(),
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 13,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return BreakingNewsCard(
-                        data: breakingNewsData[index],
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
           // section 3 - Based on Your Reading History
           Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 8),
-                  child: Text(
-                    'Based on your reading history...',
-                    style: TextStyle(color: Colors.grey),
+            child: Listener(
+              onPointerSignal: (event) {
+                      if (event is PointerScrollEvent) {
+                        final offset = event.scrollDelta.dy;
+                        innerController.jumpTo(innerController.offset + offset);
+                        _fetchNews();
+                      }
+              },
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: innerController,
+                  child: Row(
+                      // children: ListView.separated(
+                      //   padding: EdgeInsets.symmetric(horizontal: 16),
+                      //   scrollDirection: Axis.vertical,
+                      //   physics: NeverScrollableScrollPhysics(),
+                      //   shrinkWrap: true,
+                      //   itemCount: allCategoriesNews.length,
+                      //   separatorBuilder: (context, index) {
+                      //     return SizedBox(height: 16);
+                      //   },
+                      //   itemBuilder: (context, index) {
+                      //     return NewsTile(data: allCategoriesNews[index]);
+                      //   },
+                      // ),
+
+                        // children: ListView.separated(
+                        //   padding: EdgeInsets.symmetric(horizontal: 16),
+                        //   scrollDirection: Axis.vertical,
+                        //   physics: NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   itemCount: featuredNewsData.length,
+                        //   separatorBuilder: (context, index) {
+                        //     return SizedBox(height: 16);
+                        //   },
+                        //   itemBuilder: (context, index) {
+                        //     return FeaturedNewsCard(data: featuredNewsData[index]);
+                        //   },
+                        // ),
+
+                      children: new List.generate(featuredNewsData.length, (int index) {
+                       return new Container(
+                          margin: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(3.0),
+                          child: new FeaturedNewsCard(
+                                // data: featuredNewsData[2 * index],
+                                data: featuredNewsData[index],
+                              )
+                          // child: new Column(
+                          //   children: [
+                          //     new FeaturedNewsCard(
+                          //       // data: featuredNewsData[2 * index],
+                          //       data: featuredNewsData[index],
+                          //     ),
+                          //     SizedBox(height: 10),
+                          //     new FeaturedNewsCard(
+                          //       // data: featuredNewsData[2 * index + 1],
+                          //       data: featuredNewsData[2 * index + 1],
+                          //     ),
+                          //   ],
+                          // )
+
+
+                          // child: new FeaturedNewsCard(
+                          //   data: featuredNewsData[index],
+                          // ),
+
+
+                       );
+                      }),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 16, bottom: 16),
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: recomendationNewsData.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 16);
-                    },
-                    itemBuilder: (context, index) {
-                      return NewsTile(
-                        data: recomendationNewsData[index],
-                      );
-                    },
-                  ),
-                )
-              ],
+              ),
             ),
           ),
         ],

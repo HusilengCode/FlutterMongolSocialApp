@@ -5,7 +5,7 @@ import 'package:readky/view/screens/news_detail_page.dart';
 
 class NewsTile extends StatelessWidget {
   final News data;
-  NewsTile({@required this.data});
+  NewsTile({required this.data});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,7 +25,7 @@ class NewsTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(image: AssetImage(data.photo), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage(data.photo.first), fit: BoxFit.cover),
               ),
             ),
             Container(

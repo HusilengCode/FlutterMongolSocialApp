@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   TextEditingController searchInputController;
   Function searchPressed;
-  SearchAppBar({@required this.searchInputController, this.searchPressed});
+  SearchAppBar({required this.searchInputController, required this.searchPressed});
   @override
   Size get preferredSize => const Size.fromHeight(60);
 
@@ -17,7 +18,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      brightness: Brightness.dark,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.black,
       titleSpacing: 0,
@@ -61,21 +61,21 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 },
                 child: Text('cancel'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  backgroundColor: Colors.black,
                   textStyle: TextStyle(fontWeight: FontWeight.w400),
                   padding: EdgeInsets.symmetric(horizontal: 20),
                 ),
               )
             : ElevatedButton(
-                onPressed: widget.searchPressed,
+                onPressed: (){},
                 child: Text('Search'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  backgroundColor: Colors.black,
                   textStyle: TextStyle(fontWeight: FontWeight.w400),
                   padding: EdgeInsets.symmetric(horizontal: 20),
                 ),
               ),
-      ],
+      ], systemOverlayStyle: SystemUiOverlayStyle.light,
     );
   }
 }

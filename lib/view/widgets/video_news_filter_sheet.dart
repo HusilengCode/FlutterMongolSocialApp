@@ -12,7 +12,7 @@ class VideoNewsFilterSheet extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             height: 50,
-            decoration: BoxDecoration(color: Colors.grey[200], border: Border(bottom: BorderSide(color: Colors.grey[350], width: 1))),
+            decoration: BoxDecoration(color: Colors.grey[200], border: Border(bottom: BorderSide(color: Colors.grey, width: 1))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -64,11 +64,11 @@ class VideoNewsFilterSheet extends StatelessWidget {
             color: Colors.white,
             child: ListView(
               children: [
-                _buildFilterOptionTile(title: 'Newest', selected: true),
-                _buildFilterOptionTile(title: 'Oldest'),
-                _buildFilterOptionTile(title: 'Popular'),
-                _buildFilterOptionTile(title: 'Recomendation'),
-                _buildFilterOptionTile(title: 'Random'),
+                _buildFilterOptionTile(title: 'Newest', selected: true, onTap: (){}),
+                _buildFilterOptionTile(title: 'Oldest', onTap: (){}),
+                _buildFilterOptionTile(title: 'Popular', onTap: (){}),
+                _buildFilterOptionTile(title: 'Recomendation', onTap: (){}),
+                _buildFilterOptionTile(title: 'Random', onTap: (){}),
               ],
             ),
           ),
@@ -77,11 +77,11 @@ class VideoNewsFilterSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildFilterOptionTile({@required String title, bool selected = false, Function onTap}) {
+  Widget _buildFilterOptionTile({required String title, bool selected = false, required Function onTap}) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: (){},
       child: Container(
-        decoration: BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.grey[300], width: 1))),
+        decoration: BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.white, width: 1))),
         child: ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           selected: selected,

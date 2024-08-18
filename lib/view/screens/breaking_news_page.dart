@@ -3,6 +3,7 @@ import 'package:readky/model/core/news.dart';
 import 'package:readky/model/helper/news_helper.dart';
 import 'package:readky/view/widgets/custom_app_bar.dart';
 import 'package:readky/view/widgets/news_tile.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BreakingNewsPage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _BreakingNewsPageState extends State<BreakingNewsPage> {
             fontWeight: FontWeight.w400,
             fontSize: 16,
           ),
-        ),
+        ), actions: [], profilePicture: SvgPicture.asset('assets/icons/appname.svg'), onPressedProfilePicture: (){},
       ),
       body: ListView(
         shrinkWrap: true,

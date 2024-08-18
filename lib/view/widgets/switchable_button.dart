@@ -16,8 +16,8 @@ class SwitchableButton extends StatefulWidget {
       this.activeLeft = true,
       this.buttonColor = Colors.white,
       this.backgroundColor = const Color(0x3DFFFFF),
-      this.onTapLeft,
-      this.onTapRight});
+      required this.onTapLeft,
+      required this.onTapRight});
   @override
   _SwitchableButtonState createState() => _SwitchableButtonState();
 }

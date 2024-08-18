@@ -16,7 +16,7 @@ class BookmarkPage extends StatefulWidget {
 }
 
 class _BookmarkPageState extends State<BookmarkPage> with TickerProviderStateMixin {
-  TabController _bookmarkTabController;
+  TabController? _bookmarkTabController;
   List<News> news = NewsHelper.bookmarkedNews;
 
   List<VideoNews> videoNews = VideoNewsHelper.bookmarkedVideoNews;
@@ -49,14 +49,16 @@ class _BookmarkPageState extends State<BookmarkPage> with TickerProviderStateMix
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(SlidePageRoute(child: SearchPage(), direction: AxisDirection.up));
+              // Navigator.of(context).push(SlidePageRoute(child: SearchPage(), direction: AxisDirection.up));
             },
             icon: SvgPicture.asset(
               'assets/icons/Search.svg',
               color: Colors.white,
             ),
           ),
-        ],
+        ], profilePicture: SvgPicture.asset(
+              'assets/icons/Search.svg',
+            ), onPressedProfilePicture: (){},
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
@@ -76,7 +78,7 @@ class _BookmarkPageState extends State<BookmarkPage> with TickerProviderStateMix
                 indicatorWeight: 1.5,
                 onTap: (index) {
                   setState(() {
-                    _bookmarkTabController.index = index;
+                    _bookmarkTabController?.index = index;
                   });
                 },
                 tabs: [
@@ -89,7 +91,7 @@ class _BookmarkPageState extends State<BookmarkPage> with TickerProviderStateMix
                 ],
               ),
               IndexedStack(
-                index: _bookmarkTabController.index,
+                index: _bookmarkTabController?.index,
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20),

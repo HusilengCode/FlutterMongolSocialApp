@@ -1,13 +1,19 @@
+// import 'dart:ffi';
+
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:readky/model/core/news.dart';
 import 'package:readky/route/slide_page_route.dart';
 import 'package:readky/view/screens/news_detail_page.dart';
 import 'package:readky/view/utils/app_theme.dart';
 import 'package:readky/view/widgets/tag_card.dart';
+import 'package:mongol/mongol.dart';
+import 'dart:convert';  // To decode JSON
 
 class FeaturedNewsCard extends StatelessWidget {
   final News data;
-  FeaturedNewsCard({this.data});
+  FeaturedNewsCard({required this.data});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -15,50 +21,94 @@ class FeaturedNewsCard extends StatelessWidget {
         Navigator.of(context).push(SlidePageRoute(child: NewsDetailPage(data: data)));
       },
       child: Container(
-        height: 320,
-        width: 300,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-            image: AssetImage(data.photo),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        height: MediaQuery.of(context).size.height/1.3,
+        width: MediaQuery.of(context).size.width/5,
+        // width: MediaQuery.of(context).size.width/5,
+        // decoration: data.photo != null ? BoxDecoration(
+        //   color: Colors.white,
+        //   borderRadius: BorderRadius.circular(10),
+        //   image: DecorationImage(
+        //     image: AssetImage(data.photo!),
+        //     fit: BoxFit.cover,
+        //   ),
+        // ) :BoxDecoration(
+        //   color: Colors.white,
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 320,
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-              decoration: BoxDecoration(gradient: AppTheme.textOverlayGradient),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              height: MediaQuery.of(context).size.height/0.5,
+              width:  MediaQuery.of(context).size.width/5,
+              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              // decoration: BoxDecoration(gradient: AppTheme.textOverlayGradient),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.end,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TagCard(
-                    tagName: 'Movie',
-                  ),
                   Container(
-                    margin: EdgeInsets.only(top: 14, bottom: 12),
-                    child: Text(
-                      data.title,
-                      maxLines: 3,
+                    height: MediaQuery.of(context).size.height/0.5,
+                    width: data.photo.isNotEmpty ? MediaQuery.of(context).size.width/25 : MediaQuery.of(context).size.width/10,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    child: MongolText(                  
+                      data.title.isNotEmpty ? data.title : data.description,
+                      maxLines: 2, 
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 26,
                         height: 150 / 100,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        fontFamily: 'inter',
+                        color: Colors.black,
+                        fontFamily: 'TraditionalMongolian',
                       ),
                     ),
                   ),
-                  Text(
-                    'Jul 14, 2021 11:22am',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
-                  )
+                  Container(
+                    height: MediaQuery.of(context).size.height/0.5,
+                    // ignore: unnecessary_null_comparison
+                    width: data.photo.isNotEmpty ? MediaQuery.of(context).size.width/60 : MediaQuery.of(context).size.width/1000,
+                    color: Colors.white,
+                    alignment: AlignmentDirectional.bottomEnd,
+                    margin: EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    child: MongolText(
+                      data.author,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 24,
+                        height: 150 / 100,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontFamily: 'TraditionalMongolian',
+                      ),
+                    ),
+                  ),
+
+                  // Container(
+                  //  height: MediaQuery.of(context).size.height/0.5,
+                  //  // ignore: unnecessary_null_comparison
+                  //  width: data.photo != null ? MediaQuery.of(context).size.width/9 : MediaQuery.of(context).size.width/100,
+                  //  child: Image.network(
+                  //    data.photo.first,
+                  //    errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                  //    fit: BoxFit.cover),
+                  // ),
+
+                  Container(
+                    height: MediaQuery.of(context).size.height/0.5,
+                    width: data.photo.isNotEmpty ? MediaQuery.of(context).size.width/9 : MediaQuery.of(context).size.width/100,
+                    // child: data.photo != null ? Image.network(
+                    //   data.photo.first,
+                    //   errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                    //   fit: BoxFit.cover)
+                    // ) : SizedBox(height: 20),
+                    // child: SizedBox(height: 20),
+                    child: data.photo.isNotEmpty ? Image.network(data.photo.first, fit: BoxFit.cover) : SizedBox(height: 20),
+                  ),
+
                 ],
               ),
             )

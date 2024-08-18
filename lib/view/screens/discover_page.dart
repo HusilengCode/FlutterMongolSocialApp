@@ -18,7 +18,7 @@ class DiscoverPage extends StatefulWidget {
 
 class _DiscoverPageState extends State<DiscoverPage> with TickerProviderStateMixin {
   ScrollController _featuredVideoNewsCardScrollController = ScrollController();
-  TabController _categoryTabController;
+  late TabController _categoryTabController;
   List<VideoNews> featuredVideoNews = VideoNewsHelper.featuredVideoNews;
   List<News> allCategoriesNews = NewsHelper.allCategoriesNews;
 
@@ -61,14 +61,16 @@ class _DiscoverPageState extends State<DiscoverPage> with TickerProviderStateMix
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(SlidePageRoute(child: SearchPage(), direction: AxisDirection.up));
+              // Navigator.of(context).push(SlidePageRoute(child: SearchPage(), direction: AxisDirection.up));
             },
             icon: SvgPicture.asset(
               'assets/icons/Search.svg',
               color: Colors.white,
             ),
           ),
-        ],
+        ], profilePicture: SvgPicture.asset(
+              'assets/icons/Search.svg',
+            ), onPressedProfilePicture: (){},
       ),
       body: ListView(
         shrinkWrap: true,

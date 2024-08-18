@@ -4,7 +4,7 @@ class ProfileInfoCard extends StatelessWidget {
   final String username;
   final String subscriptionStatus;
 
-  ProfileInfoCard({@required this.username, @required this.subscriptionStatus});
+  ProfileInfoCard({required this.username, required this.subscriptionStatus});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,7 +68,7 @@ class ProfileInfoCard extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF252525),
+                  backgroundColor: Color(0xFF252525),
                   textStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                   padding: EdgeInsets.symmetric(
                     vertical: 14,

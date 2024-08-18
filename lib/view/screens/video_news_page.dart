@@ -4,6 +4,7 @@ import 'package:readky/model/helper/video_news_helper.dart';
 import 'package:readky/view/widgets/custom_app_bar.dart';
 import 'package:readky/view/widgets/video_news_card.dart';
 import 'package:readky/view/widgets/video_news_filter_sheet.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class VideoNewsPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class VideoNewsPage extends StatefulWidget {
 
 class _VideoNewsPageState extends State<VideoNewsPage> with TickerProviderStateMixin {
   List<VideoNews> videoNews = VideoNewsHelper.videoNews;
-  TabController _categoryTabController;
+  late TabController _categoryTabController;
 
   @override
   void initState() {
@@ -76,7 +77,7 @@ class _VideoNewsPageState extends State<VideoNewsPage> with TickerProviderStateM
               color: Colors.white,
             ),
           )
-        ],
+        ], profilePicture: SvgPicture.asset('assets/icons/appname.svg'), onPressedProfilePicture: () {},
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

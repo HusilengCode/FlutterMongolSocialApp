@@ -53,11 +53,11 @@ class _SearchPageState extends State<SearchPage> {
                     child: OutlinedButton(
                       onPressed: () {
                         setState(() {
-                          searchInputController.text = category[index].name;
+                          searchInputController.text = category[index].name!;
                         });
                       },
                       child: Text(
-                        category[index].name,
+                        category[index].name!,
                         style: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.w400),
                       ),
                       style: OutlinedButton.styleFrom(
@@ -69,20 +69,20 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
-              child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: searchData.length,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 16);
-                },
-                itemBuilder: (context, index) {
-                  return NewsTile(data: searchData[index]);
-                },
-              ),
+              // width: MediaQuery.of(context).size.width,
+              // child: ListView.separated(
+              //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              //   scrollDirection: Axis.vertical,
+              //   physics: NeverScrollableScrollPhysics(),
+              //   shrinkWrap: true,
+              //   // itemCount: searchData.length,
+              //   // separatorBuilder: (context, index) {
+              //   //   return SizedBox(height: 16);
+              //   // },
+              //   // itemBuilder: (context, index) {
+              //   //   return NewsTile(data: searchData[index]);
+              //   // },
+              // ),
             ),
           ],
         ),

@@ -13,7 +13,7 @@ class PageSwitch extends StatefulWidget {
 class _PageSwitchState extends State<PageSwitch> {
   int _selectedIndex = 0;
 
-  _onItemTapped(int index) {
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -29,8 +29,8 @@ class _PageSwitchState extends State<PageSwitch> {
       ][_selectedIndex],
       drawer: CustomSideBar(),
       bottomNavigationBar: CustomBottomNavigationBar(
-        onItemTapped: _onItemTapped,
         selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
       ),
     );
   }
