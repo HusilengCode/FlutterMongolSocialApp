@@ -47,7 +47,6 @@ flutter run
 
 
 ## License
-It is under MIT License.
 
 ## Donate
 
